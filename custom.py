@@ -1,0 +1,35 @@
+import json
+
+import discord
+from discord.ext import commands
+
+directoryPath = {
+  "serverPrefixdb": "cogs/Databases/prefixes.json",
+  "tempPNG": "cogs/tempFiles/temp.png"
+}
+
+emojiList = {
+    "confirmed": "<a:confirmed:881422225134223372>",
+    "failed": "<a:failed:881422274467598366>"
+}
+
+roleMessageId = 896677611340701726
+
+def isItme(ctx):
+    return ctx.message.author.id == 220327217312432129
+
+def isItKing(author):
+    king = {220327217312432129, 896677611340701726}
+    return (author in king)
+
+def get_db(filePath):
+    with open(filePath, "r") as file:
+        return json.load(file)
+
+def save_db(db, filePath):
+    with open(filePath, "w") as file:
+        json.dump(db, file, indent=4)
+
+def getPrefix(client, message):
+    prefixes = get_db(filePath=directoryPath["serverPrefixdb"])
+    return prefixes[str(message.guild.id)]
